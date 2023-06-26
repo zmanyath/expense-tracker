@@ -2,7 +2,6 @@
 
 export default {
   content: ["./src/**/*.{html,jsx,vue}"],
-  darkMode: 'class',
   theme: {
     extend: {
       backgroundImage: {
