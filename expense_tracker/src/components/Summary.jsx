@@ -1,15 +1,50 @@
 import { NavLink } from "react-router-dom";
-import FetchExpense from "./FetchExpense";
+import { useState } from "react";
 
-const Summary = ({expenses}) => {
+const Summary = () => {
+
+    const [expenseList, setExpensesList] = useState([]);
+    const [editId, setEditId] = useState(null);
+    const [description, setDescription] = useState('');
+    const [amount, setAmount] = useState('');
+    const [date, setDate] = useState('');
+  
+    const onButtonClick = (e) => {
+      e.preventDefault();
+      
+      newExpense({description, amount, date})
+      setDescription('');
+      setAmount('');
+      setDate('');
+    };
+
+    const newExpense = (addExpense) => {
+        if (editId) {
+        const updatedExpense = expenseList.map((ex) =>
+            ex.id === editId ? { ...addExpense, id: editId } : ex
+        );
+        setExpensesList(updatedExpense);
+        setEditId(null);
+        } else {
+        setExpensesList([...expenseList, { ...addExpense, id: Date.now() }]);
+        }
+    };
+
+    const editExpenses = (ex) => {
+        setEditId(expenseList.id);
+    };
+    
+    const calculateSum = (arr) => {
+        return arr.reduce((total, current) => {
+            return total + current;
+        }, 0);
+    }
     return (
         <div className="relative overflow-x-auto">
             <div className="expenseList">   
                 <h2 className="text-lg font-semibold text-center">Expenses Summary</h2>
 
-                <hr></hr>                
-
-                {/* <p id="no_expenses"  >You don't have any expenses!</p>  */}
+                <hr></hr>          
 
                 <h2 className="text-lg font-semibold text-center">Expenses</h2>
                 <table className="w-full text-sm text-left text-gray-500 ">
@@ -22,103 +57,85 @@ const Summary = ({expenses}) => {
                             <th scope="col" className="px-6 py-3">
                                 When
                             </th>
-                            <th scope="col" className="px-6 py-3 rounded-l-lg">
+                            <th scope="col" className="px-6 py-3">
                                 How Much
                             </th>
                         </tr>
                     </thead>
-
-                    <tbody>
-                        <tr className="">
-                            <th scope="row" className="px-6 py-3 font-medium whitespace-nowrap">
-                                <a className="description">Groceries</a>
-                            </th>
-                            <td className="px-6 py-4">
-                                2023/06/25
-                            </td>
-
-                            <td className="px-6 py-4">500.00</td>
-                        </tr>
-                        <tr className="">
-                            <th scope="row" className="px-6 py-3 font-medium whitespace-nowrap">
-                                <a className="description">Rent</a>
-                            </th>
-                            <td className="px-6 py-4">
-                                2023/06/22
-                            </td>
-
-                            <td className="px-6 py-4">
-                                2000.00
-                            </td>
-                        </tr>
-                    </tbody>
-                    <tfoot>
-                    <tr className="font-semibold text-gray-900 dark:text-white">
-                        <th scope="row" className="px-6 py-3 text-base">Total</th>
-                        <td className="px-6 py-4">2500.00</td>
-                        <td className="px-6 py-4">
-                            <NavLink to='/ExpensesPage' className="bg-[#818cf8z`] hover:bg-primary-300 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">
-                                Add a new expense
-                            </NavLink></td>
-                    </tr>
-                    </tfoot>
-                </table>
-            </div>
-
-            <div>
-                <h2 className="text-lg font-semibold text-center">People You Owe</h2>
-
-                <table className="w-full text-sm text-left text-gray-500">
-                    <thead className="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700">
-                        <tr>
-                            <th scope="col" className="px-6 py-3 rounded-l-lg">
-                                Who
-                            </th>
-                            <th className="px-6 py-3">
-                                What
-                            </th>
-                            <th className="px-6 py-3">
-                                Due
-                            </th>
-                            <th className="px-6 py-3 rounded-l-lg">
-                                How Much
-                            </th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-
-                     <tr className="bg-white dark:bg-gray-800">
-                        <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            Retahbile
-                        </th>
-                        <td className="px-6 py-4">
-                            Lunch
-                        </td>
-                        <td className="px-6 py-4">
-                            2023/06/10
-                        </td>
-                        <td className="px-6 py-4">
-                            100.00
-                        </td>
-                    </tr>
-                    </tbody>
                     
-                    <tfoot>
+                    <tbody >
+                        {expenseList.length > 0 && expenseList.map((ex) => (
+                         <tr className="" key={ex.id}>
+                                <th scope="row" className="px-6 py-3 font-medium whitespace-nowrap">
+                                    <a className="description">{ex.description}</a>
+                                </th>
+                                <td className="px-6 py-4">
+                                    {ex.date}
+                                </td>
 
-                    <tr className="font-semibold text-gray-900 dark:text-white">
-                        <th scope="row" className="px-6 py-3 text-base">Total</th>
-                        <td className="px-6 py-3">100.00</td>
+                                <td className="px-6 py-4">{'R' + ex.amount}</td>
+                            </tr>
+                            ))}
+                            
+                    </tbody>
+                    <tfoot>
+                    
+                    <tr className="font-semibold text-gray-900" >
+                        <th scope="row" className="px-6 py-3 text-base">Total Expenses</th>
+                        <td className="px-6 py-4" >{}</td>
+                        
                     </tr>
+                    
                     </tfoot>
                 </table>
             </div>
-            <div className="font-semibold text-gray-900 dark:text-white" >
-                <div className="px-6 py-3 right">
-                    <h3>Total Expenses</h3>
-                    <p>2600.00</p>
-                    </div>
+            
+            <br />
+            <div>
+                <h2 className="text-lg font-semibold text-center" >Add New Expense Below</h2>
             </div>
+            <hr></hr>
+            <div className="p-4  bg-[#a78bfa] border border-[#a78bfa] rounded-lg shadow sm:p-6 md:p-8">
+                <form className="space-y-6" onSubmit={onButtonClick}>
+                    <div className='mb-6'>
+                        <label className='block mb-2 font-medium text-gray-900 dark:text-black'>Description</label>
+                        <input
+                        className='text-gray-900 rounded-lg block w-full p-2.5'
+                        type="text"
+                        onChange={(e) => setDescription(e.target.value)}
+                        value={description}
+                        required
+                        />
+                    </div>
+                    <div className='mb-6'>
+                        <label className='block mb-2 font-medium text-gray-900 dark:text-black'>Amount</label>
+                        <input
+                        className='text-gray-900 rounded-lg block w-full p-2.5'
+                        type="number"
+                        onChange={(e) => setAmount(e.target.value)}
+                        value={amount}
+                        required
+                        />
+                    </div>
+                    <div className='mb-6'>
+                        <label className='block mb-2 font-medium text-gray-900 dark:text-black'>Date</label>
+                        <input
+                        className='text-gray-900 rounded-lg block w-full p-2.5'
+                        type="date"
+                        onChange={(e) => setDate(e.target.value)}
+                        value={date}
+                        required
+                        />
+                    </div>
+
+                    <button 
+                    className='bg-[#7e22ce] focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none '
+                    type="submit" > Submit </button>
+                   
+                </form>
+                
+            </div>
+
         </div>
         
     )   

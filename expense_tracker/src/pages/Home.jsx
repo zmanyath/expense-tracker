@@ -1,18 +1,17 @@
-import TopBar from "../components/TopBar";
 import Summary from "../components/Summary";
 import MainLayout from '../layouts/MainLayout'
-import LoginPage from "./LoginPage";
 
-const Home = () => {
+const Home = (expenseList) => {
     return (
         <MainLayout>
 
-            <Summary />
+            <Summary 
+            
+            />
+            
             
         </MainLayout>
     )
 }
-
-
 
 export default Home;
