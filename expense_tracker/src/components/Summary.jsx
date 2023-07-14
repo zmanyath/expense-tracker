@@ -29,16 +29,6 @@ const Summary = () => {
         setExpensesList([...expenseList, { ...addExpense, id: Date.now() }]);
         }
     };
-
-    const editExpenses = (ex) => {
-        setEditId(expenseList.id);
-    };
-    
-    const calculateSum = (arr) => {
-        return arr.reduce((total, current) => {
-            return total + current;
-        }, 0);
-    }
     return (
         <div className="relative overflow-x-auto">
             <div className="expenseList">   
@@ -78,15 +68,6 @@ const Summary = () => {
                             ))}
                             
                     </tbody>
-                    <tfoot>
-                    
-                    <tr className="font-semibold text-gray-900" >
-                        <th scope="row" className="px-6 py-3 text-base">Total Expenses</th>
-                        <td className="px-6 py-4" >{}</td>
-                        
-                    </tr>
-                    
-                    </tfoot>
                 </table>
             </div>
             
