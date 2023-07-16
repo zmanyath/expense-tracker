@@ -1,4 +1,3 @@
-import Summary from '../components/Summary';
 import TopBar from '../components/TopBar'  
 
 const MainLayout = ({ children }) => {
