@@ -135,72 +135,64 @@ const Summary = () => {
           </table>
         )}
       </div>
-      {isModalOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div className="bg-white p-8 rounded-lg shadow-lg max-w-md w-full">
-            <h2 className="text-xl font-semibold text-center mb-4">
-              {editId ? 'Update Expense' : 'Add New Expense'}
-            </h2>
-            <hr className="mb-4"/>
-            <form className="space-y-6" onSubmit={onButtonClick}>
-              <div className="mb-6">
-                <label htmlFor="description" className="block mb-2 font-medium text-gray-900">
-                  Description
-                </label>
-                <input
-                  id="description"
-                  className="text-gray-900 rounded-lg block w-full p-2.5 border border-gray-300 focus:outline-none focus:border-blue-600"
-                  type="text"
-                  onChange={(e) => setDescription(e.target.value)}
-                  value={description}
-                  required
-                />
+          <div>
+      <button
+        onClick={() => isModalOpen(true)}
+        className="rounded-md bg-gray-950/5 px-2.5 py-1.5 text-sm font-semibold text-gray-900 hover:bg-gray-950/10"
+      >
+        Open dialog
+      </button>
+      <Dialog open={open} onClose={setOpen} className="relative z-10">
+        <DialogBackdrop
+          transition
+          className="fixed inset-0 bg-gray-500/75 transition-opacity data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out data-leave:duration-200 data-leave:ease-in"
+        />
+
+        <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
+          <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+            <DialogPanel
+              transition
+              className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all data-closed:translate-y-4 data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out data-leave:duration-200 data-leave:ease-in sm:my-8 sm:w-full sm:max-w-lg data-closed:sm:translate-y-0 data-closed:sm:scale-95"
+            >
+              <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                <div className="sm:flex sm:items-start">
+                  <div className="mx-auto flex size-12 shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:size-10">
+                    <ExclamationTriangleIcon aria-hidden="true" className="size-6 text-red-600" />
+                  </div>
+                  <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                    <DialogTitle as="h3" className="text-base font-semibold text-gray-900">
+                      Deactivate account
+                    </DialogTitle>
+                    <div className="mt-2">
+                      <p className="text-sm text-gray-500">
+                        Are you sure you want to deactivate your account? All of your data will be permanently removed.
+                        This action cannot be undone.
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <div className="mb-6">
-                <label htmlFor="amount" className="block mb-2 font-medium text-gray-900">
-                  Amount
-                </label>
-                <input
-                  id="amount"
-                  className="text-gray-900 rounded-lg block w-full p-2.5 border border-gray-300 focus:outline-none focus:border-blue-600"
-                  type="number"
-                  onChange={(e) => setAmount(e.target.value)}
-                  value={amount}
-                  required
-                />
-              </div>
-              <div className="mb-6">
-                <label htmlFor="date" className="block mb-2 font-medium text-gray-900">
-                  Date
-                </label>
-                <input
-                  id="date"
-                  className="text-gray-900 rounded-lg block w-full p-2.5 border border-gray-300 focus:outline-none focus:border-blue-600"
-                  type="date"
-                  onChange={(e) => setDate(e.target.value)}
-                  value={date}
-                  required
-                />
-              </div>
-              <div className="flex justify-between">
+              <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
                 <button
-                    className="bg-[#7e22ce] focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-white  text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none"
-                    type="submit"
+                  type="button"
+                  onClick={() => setOpen(false)}
+                  className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-red-500 sm:ml-3 sm:w-auto"
                 >
-                    {editId ? 'Update Expense' : 'Submit'}
+                  Deactivate
                 </button>
                 <button
-                  className="bg-blue-700 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded"
-                  onClick={toggleModal}
                   type="button"
+                  data-autofocus
+                  onClick={() => setOpen(false)}
+                  className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-xs inset-ring inset-ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
                 >
                   Cancel
                 </button>
               </div>
-            </form>
+            </DialogPanel>
           </div>
         </div>
-      )}
+      </Dialog>
     </div>
   );
 };
